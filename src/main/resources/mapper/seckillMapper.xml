@@ -1,0 +1,31 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.seckill.dao.SeckillMapper">
+
+    <select id="queryById" parameterType="long" resultType="org.seckill.entity.Seckill">
+        select seckill_id,name,number,start_time,end_time,create_time
+        from seckill
+        where seckill_id=#{seckillId}
+    </select>
+
+    <select id="queryAll" resultType="org.seckill.entity.Seckill">
+        select seckill_id,name,number,start_time,end_time,create_time
+        from seckill
+        order by create_time DESC
+        limit #{offset},#{limit}
+    </select>
+
+    <update id="reduceNumber">
+        UPDATE
+         seckill
+         set
+         number = number -1
+         where seckill_id =#{seckillId}
+         <![CDATA[ and start_time <= #{killTime}]]>
+         <![CDATA[ and end_time >= #{killTime}]]>
+         and number>0
+    </update>
+
+
+</mapper>
